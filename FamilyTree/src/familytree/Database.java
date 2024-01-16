@@ -182,6 +182,71 @@ public class Database {
         
         return result;
     }
+    public ArrayList<Szemely> gyerekKereso(String szemelyiSzam){
+        ArrayList<Szemely> result = new ArrayList<>();
+        ResultSet rs;
+        
+        if(this.conn != null){
+            String sql = "SELECT * FROM szulok LEFT JOIN szemelyek ON gyerekId=szemelyek.szemelyiszam WHERE anyaId LIKE'%" + szemelyiSzam +
+                    "%' OR apaId LIKE '%" + szemelyiSzam + "%';";
+    
+            Statement stmt = null;
+            
+            try {
+                stmt = conn.createStatement();
+            } catch (SQLException ex) { System.out.println("Baj van! Hiba a statement létrehozásában! " + ex); }
+            
+            if(stmt != null){
+                try {    
+                    rs = stmt.executeQuery(sql);
+                    while(rs.next()){
+                        Szemely sz = new Szemely(rs.getString("szemelyiszam"), rs.getString("nev"), 
+                                rs.getBoolean("lany"), rs.getString("szulhely"), rs.getString("szulido"), 
+                                rs.getString("anyaId"), rs.getString("apaId"), rs.getString("halalido"), rs.getString("halalhely"));
+
+                        result.add(sz);
+                    }
+                } catch(SQLException ex){ System.out.println("Baj van! Hiba a query futtatásánál! " + ex); }
+            } 
+        }
+        
+        System.out.println("Adatlekérdezés történt");
+        
+        return result;
+    }
+    public ArrayList<Szemely> testverKereso(String anyaId, String apaId, String gyerekId){
+        ArrayList<Szemely> result = new ArrayList<>();
+        ResultSet rs;
+        
+        if(this.conn != null){
+            String sql = "SELECT * FROM szulok LEFT JOIN szemelyek ON gyerekId=szemelyek.szemelyiszam WHERE (anyaId LIKE '" + anyaId + "' OR anyaId LIKE '" + apaId 
+                    + "' OR apaId LIKE '" + anyaId +"' OR apaId LIKE '" + apaId + "') AND gyerekId NOT LIKE '" + gyerekId + "';";
+    
+            Statement stmt = null;
+            
+            try {
+                stmt = conn.createStatement();
+            } catch (SQLException ex) { System.out.println("Baj van! Hiba a statement létrehozásában! " + ex); }
+            
+            if(stmt != null){
+                try {    
+                    rs = stmt.executeQuery(sql);
+                    while(rs.next()){
+                        Szemely sz = new Szemely(rs.getString("szemelyiszam"), rs.getString("nev"), 
+                                rs.getBoolean("lany"), rs.getString("szulhely"), rs.getString("szulido"), 
+                                rs.getString("anyaId"), rs.getString("apaId"), rs.getString("halalido"), rs.getString("halalhely"));
+
+                        result.add(sz);
+                        System.out.println(sz);
+                    }
+                } catch(SQLException ex){ System.out.println("Baj van! Hiba a query futtatásánál! " + ex); }
+            } 
+        }
+        
+        System.out.println("Adatlekérdezés történt");
+        
+        return result;
+    }
     
     public void ujSzemely(Szemely sz){
         //Új személy létrehozása az adatázisban

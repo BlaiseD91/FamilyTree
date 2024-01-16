@@ -45,6 +45,13 @@ public class KeresoFrame extends javax.swing.JFrame {
         modosit.setVisible(true);
         
     }
+    private void lekerdezoFrameLetrehozas(){
+        String kivalasztott = jList1.getSelectedValue().split(" ", 2)[0];
+        Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
+        
+        LekerdezesFrame leker = new LekerdezesFrame(sz);
+        leker.setVisible(true);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -142,8 +149,7 @@ public class KeresoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_modositGombActionPerformed
 
     private void lekerGombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lekerGombActionPerformed
-        LekerdezesFrame leker = new LekerdezesFrame();
-        leker.setVisible(true);
+        lekerdezoFrameLetrehozas();
     }//GEN-LAST:event_lekerGombActionPerformed
 
     private void keresGombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keresGombActionPerformed

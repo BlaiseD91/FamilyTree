@@ -46,6 +46,13 @@ public class DataHandler {
         return this.db.nevSzamKereso(keresoSzoveg);
     }
     
+    public ArrayList<Szemely> gyerekKereso(String keresoSzoveg){
+        return this.db.gyerekKereso(keresoSzoveg);
+    }
+    public ArrayList<Szemely> testverKereso(String anyaId, String apaId, String gyerekId){
+        return this.db.testverKereso(anyaId, apaId, gyerekId);
+    }
+    
     
         
         
