@@ -316,9 +316,6 @@
               </StringArray>
             </Property>
             <Property name="selectionMode" type="int" value="0"/>
-            <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="(this.szemely.getAnya().equals(&quot;&quot;) &amp;&amp; this.szemely.getApa().equals(&quot;&quot;)) ? false : true" type="code"/>
-            </Property>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="szulokListMouseClicked"/>

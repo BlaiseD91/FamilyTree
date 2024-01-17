@@ -67,13 +67,28 @@ public class LekerdezesFrame extends javax.swing.JFrame {
     private DefaultListModel<String> showList(ArrayList<Szemely> szemelyek){
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Szemely szemely : szemelyek) {
+            if(szemely.getNev() != null)
                 model.addElement(szemely.getSzemelyiSzam() + " " + szemely.getNev());
         }
         return model;
     }
     
-    private void lekerdezoFrameLetrehozas(){
+    private void lekerdezoFrameLetrehozasSzulok(){
         String kivalasztott = szulokList.getSelectedValue().split(" ", 2)[0];
+        Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
+        
+        LekerdezesFrame leker = new LekerdezesFrame(sz);
+        leker.setVisible(true);
+    }
+    private void lekerdezoFrameLetrehozasTestverek(){
+        String kivalasztott = testverekList.getSelectedValue().split(" ", 2)[0];
+        Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
+        
+        LekerdezesFrame leker = new LekerdezesFrame(sz);
+        leker.setVisible(true);
+    }
+    private void lekerdezoFrameLetrehozasGyerekek(){
+        String kivalasztott = gyerekekList.getSelectedValue().split(" ", 2)[0];
         Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
         
         LekerdezesFrame leker = new LekerdezesFrame(sz);
@@ -172,7 +187,6 @@ public class LekerdezesFrame extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         szulokList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        szulokList.setEnabled((this.szemely.getAnya().equals("") && this.szemely.getApa().equals("")) ? false : true);
         szulokList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 szulokListMouseClicked(evt);
@@ -400,7 +414,7 @@ public class LekerdezesFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField8ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        VizualizaciosFrame vf = new VizualizaciosFrame(szemely, szulok, testverek, gyerekek);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
@@ -408,15 +422,15 @@ public class LekerdezesFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void szulokListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_szulokListMouseClicked
-        lekerdezoFrameLetrehozas();
+        lekerdezoFrameLetrehozasSzulok();
     }//GEN-LAST:event_szulokListMouseClicked
 
     private void testverekListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_testverekListMouseClicked
-        lekerdezoFrameLetrehozas();
+        lekerdezoFrameLetrehozasTestverek();
     }//GEN-LAST:event_testverekListMouseClicked
 
     private void gyerekekListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gyerekekListMouseClicked
-        lekerdezoFrameLetrehozas();
+        lekerdezoFrameLetrehozasGyerekek();
     }//GEN-LAST:event_gyerekekListMouseClicked
 
     /**

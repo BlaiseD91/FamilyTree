@@ -38,19 +38,22 @@ public class KeresoFrame extends javax.swing.JFrame {
     }
     
     private void modositoFrameLetrehozas(){
-        String kivalasztott = jList1.getSelectedValue().split(" ", 2)[0];
-        Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
-        
-        ModositasFrame modosit = new ModositasFrame(sz);
-        modosit.setVisible(true);
-        
+        if(talalatiLista.size() > 0){
+            String kivalasztott = jList1.getSelectedValue().split(" ", 2)[0];
+            Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
+
+            ModositasFrame modosit = new ModositasFrame(sz);
+            modosit.setVisible(true);
+        }
     }
     private void lekerdezoFrameLetrehozas(){
-        String kivalasztott = jList1.getSelectedValue().split(" ", 2)[0];
-        Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
-        
-        LekerdezesFrame leker = new LekerdezesFrame(sz);
-        leker.setVisible(true);
+        if(talalatiLista.size() > 0){
+            String kivalasztott = jList1.getSelectedValue().split(" ", 2)[0];
+            Szemely sz = FamilyTreeFrame.dh.szemelyLekerdezes(kivalasztott);
+
+            LekerdezesFrame leker = new LekerdezesFrame(sz);
+            leker.setVisible(true);
+        }
     }
     
     /**
