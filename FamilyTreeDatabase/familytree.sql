@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Jan 16. 07:28
+-- Létrehozás ideje: 2024. Jan 17. 22:28
 -- Kiszolgáló verziója: 10.4.24-MariaDB
 -- PHP verzió: 8.1.6
 
@@ -29,7 +29,6 @@ USE `familytree`;
 -- Tábla szerkezet ehhez a táblához `szemelyek`
 --
 
-DROP TABLE IF EXISTS `szemelyek`;
 CREATE TABLE IF NOT EXISTS `szemelyek` (
   `szemelyiszam` varchar(11) COLLATE utf8_hungarian_ci NOT NULL,
   `nev` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
@@ -48,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `szemelyek` (
 INSERT INTO `szemelyek` (`szemelyiszam`, `nev`, `szulhely`, `szulido`, `halalhely`, `halalido`, `lany`) VALUES
 ('00000000000', 'Ismeretlen', 'Ismeretlen', '1800-01-01', 'Ismeretlen', '1800-01-01', 0),
 ('11952-05-15', 'Mézga Paula', 'Budapest', '1952-05-15', '', '', 1),
+('12000-12-25', 'Parlagi Anna', 'Fót', '2000-12-25', '', '', 1),
 ('12010-04-11', 'Minta Mária', 'Szeged', '2010-04-11', '', '', 1),
 ('21948-07-19', 'Mézga Géza', 'Budapest', '1948-07-19', 'Fót', '2010-02-11', 0),
 ('21951-04-13', 'Karacs Ilona', 'Pécs', '1951-04-13', '', '', 1),
@@ -55,7 +55,8 @@ INSERT INTO `szemelyek` (`szemelyiszam`, `nev`, `szulhely`, `szulido`, `halalhel
 ('21974-12-12', 'Gerebély András', 'Győr', '1974-12-12', '', '', 0),
 ('21977-02-28', 'Mézga Viktor', 'Budapest', '1977-02-28', '', '', 0),
 ('21988-11-20', 'Minta Géza', 'Mintaváros', '1988-11-20', '', '', 0),
-('21990-10-09', 'Kiss Gertrúd', 'Sopon', '1990-10-09', '', '', 0);
+('21990-10-09', 'Kiss Gertrúd', 'Sopon', '1990-10-09', '', '', 0),
+('26708307630', 'Cint Ibolya', 'Maglód', '1967-08-30', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -63,7 +64,6 @@ INSERT INTO `szemelyek` (`szemelyiszam`, `nev`, `szulhely`, `szulido`, `halalhel
 -- Tábla szerkezet ehhez a táblához `szulok`
 --
 
-DROP TABLE IF EXISTS `szulok`;
 CREATE TABLE IF NOT EXISTS `szulok` (
   `gyerekId` varchar(11) COLLATE utf8_hungarian_ci NOT NULL,
   `anyaId` varchar(11) COLLATE utf8_hungarian_ci NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `szulok` (
 --
 
 INSERT INTO `szulok` (`gyerekId`, `anyaId`, `apaId`) VALUES
-('11952-05-15', '', ''),
+('11952-05-15', '21990-10-09', '21988-11-20'),
 ('12010-04-11', '21990-10-09', '21988-11-20'),
 ('21948-07-19', '', ''),
 ('21951-04-13', '', ''),

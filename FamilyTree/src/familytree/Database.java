@@ -43,8 +43,119 @@ public class Database {
             System.out.println("Az adatbázis vagy az adattábla nem található...");
         }
         
+        if(this.conn==null){
+            try {
+                this.conn = DriverManager.getConnection(this.url, "root", "");
+                Statement stmt = this.conn.createStatement();
+                String sql = "CREATE DATABASE IF NOT EXISTS `" + databaseName + "` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci";
+                stmt.executeUpdate(sql);
+                this.conn = DriverManager.getConnection(this.url+this.databaseName, "root", "");
+                createTables();
+                System.out.println("...de létrehoztam! ");
+                this.conn = DriverManager.getConnection(this.url+this.databaseName, "root", "");
+                uploadDatas();
+                
+            } catch(SQLException ex) { System.out.println("Hiba! Nem is tudom létrehozni! " + ex);}
+        }
+        
         if(this.conn != null) System.out.println("Sikeres kapcsolódás");
         
+    }
+    
+    private void createTables(){
+        if(conn != null){
+            Statement stmt = null;
+            String sql = "CREATE TABLE IF NOT EXISTS `szemelyek` (" +
+                "  `szemelyiszam` varchar(11) COLLATE utf8_hungarian_ci NOT NULL," +
+                "  `nev` varchar(50) COLLATE utf8_hungarian_ci NOT NULL," +
+                "  `szulhely` varchar(35) COLLATE utf8_hungarian_ci NOT NULL," +
+                "  `szulido` varchar(10) COLLATE utf8_hungarian_ci NOT NULL," +
+                "  `halalhely` varchar(35) COLLATE utf8_hungarian_ci DEFAULT NULL," +
+                "  `halalido` varchar(10) COLLATE utf8_hungarian_ci DEFAULT NULL," +
+                "  `lany` tinyint(1) NOT NULL," +
+                "  PRIMARY KEY (`szemelyiszam`)" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;";
+            
+            try { stmt = conn.createStatement();
+            } catch (SQLException ex) { System.out.println("Baj van! Hiba a statement létrehozásában! " + ex); }
+            
+            if(stmt != null){
+                try {    
+                    stmt.execute(sql);
+                } catch(SQLException ex){
+                    System.out.println("Baj van! Hiba a CreateTable-nél! " + ex);
+                }
+            }
+            Statement stmt2 = null;
+            sql = "CREATE TABLE IF NOT EXISTS `szulok` (" +
+                "  `gyerekId` varchar(11) COLLATE utf8_hungarian_ci NOT NULL," +
+                "  `anyaId` varchar(11) COLLATE utf8_hungarian_ci NOT NULL," +
+                "  `apaId` varchar(11) COLLATE utf8_hungarian_ci NOT NULL," +
+                "  PRIMARY KEY (`gyerekId`)," +
+                "  KEY `anyaId` (`anyaId`)," +
+                "  KEY `apaId` (`apaId`)" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;";
+            
+            try { stmt2 = conn.createStatement();
+            } catch (SQLException ex) { System.out.println("Baj van! Hiba a statement létrehozásában! " + ex); }
+            
+            if(stmt2 != null){
+                try {    
+                    stmt2.execute(sql);
+                } catch(SQLException ex){
+                    System.out.println("Baj van! Hiba a CreateTable-nél! " + ex);
+                }
+            }
+        }
+    }
+    private void uploadDatas(){
+        if(conn != null){
+            Statement stmt = null;
+            String sql = "INSERT INTO `szemelyek` (`szemelyiszam`, `nev`, `szulhely`, `szulido`, `halalhely`, `halalido`, `lany`) VALUES" +
+                "('11952-05-15', 'Mézga Paula', 'Budapest', '1952-05-15', '', '', 1)," +
+                "('12000-12-25', 'Parlagi Anna', 'Fót', '2000-12-25', '', '', 1)," +
+                "('12010-04-11', 'Minta Mária', 'Szeged', '2010-04-11', '', '', 1)," +
+                "('21948-07-19', 'Mézga Géza', 'Budapest', '1948-07-19', 'Fót', '2010-02-11', 0)," +
+                "('21951-04-13', 'Karacs Ilona', 'Pécs', '1951-04-13', '', '', 1)," +
+                "('21972-05-28', 'Kele Tünde', 'Gyõr', '1972-05-28', '', '', 0)," +
+                "('21974-12-12', 'Gerebély András', 'Gyõr', '1974-12-12', '', '', 0)," +
+                "('21977-02-28', 'Mézga Viktor', 'Budapest', '1977-02-28', '', '', 0)," +
+                "('21988-11-20', 'Minta Géza', 'Mintaváros', '1988-11-20', '', '', 0)," +
+                "('21990-10-09', 'Kiss Gertrúd', 'Sopon', '1990-10-09', '', '', 0)," +
+                "('26708307630', 'Cint Ibolya', 'Maglód', '1967-08-30', '', '', 1);";
+            
+            try { stmt = conn.createStatement();
+            } catch (SQLException ex) { System.out.println("Baj van! Hiba a statement létrehozásában! " + ex); }
+            
+            if(stmt != null){
+                try {    
+                    stmt.execute(sql);
+                } catch(SQLException ex){
+                    System.out.println("Baj van! Hiba itt: UploadDatas: szemelyek! " + ex);
+                }
+            }
+            stmt = null;
+            sql = "INSERT INTO `szulok` (`gyerekId`, `anyaId`, `apaId`) VALUES" +
+                "('11952-05-15', '21990-10-09', '21988-11-20')," +
+                "('12010-04-11', '21990-10-09', '21988-11-20')," +
+                "('21948-07-19', '', '')," +
+                "('21951-04-13', '', '')," +
+                "('21972-05-28', '', '21948-07-19')," +
+                "('21974-12-12', '', '21948-07-19')," +
+                "('21977-02-28', '', '21948-07-19')," +
+                "('21988-11-20', '', '21948-07-19');";
+            
+            try { stmt = conn.createStatement();
+            } catch (SQLException ex) { System.out.println("Baj van! Hiba a statement létrehozásában! " + ex); }
+            
+            if(stmt != null){
+                try {    
+                    stmt.execute(sql);
+                } catch(SQLException ex){
+                    System.out.println("Baj van! Hiba itt: uploadDatas: szulok! " + ex);
+                }
+            }
+        }
     }
     
     public boolean isConnected(){
